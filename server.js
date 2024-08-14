@@ -19,6 +19,7 @@ const port = process.env.PORT || 8000;
 require("dotenv").config();
 
 // Database Connection
+// DB=mongodb://localhost:27017/new_project
 mongoose
   .connect(process.env.DB)
   .then(() => console.log("DataBase Connected"))
