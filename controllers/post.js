@@ -109,7 +109,6 @@ const newsFeed = async (req, res) => {
       .populate("comments.postedBy", "_id name image")
       .sort({ createdAt: -1 })
       .limit(perPage);
-
     res.json(posts);
   } catch (error) {
     console.log(error);
@@ -195,7 +194,7 @@ const posts = async (req, res) => {
       .populate("postedBy", "_id name image")
       .populate("comments.postedBy", "_id name image")
       .sort({ createdAt: -1 })
-      // .limit(16);
+      .limit(20);
     res.json(posts);
   } catch (error) {
     console.log(error);
