@@ -3,15 +3,20 @@ const cors = require("cors");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
 const { readdirSync } = require("fs");
+const path = require("path");
 
 const app = express();
 const http = require("http").createServer(app);
 const io = require("socket.io")(http, {
   cors: {
-    origin: ["http://localhost:3000","https://connect-buzz-backend.onrender.com"],
+    origin: [
+      "http://localhost:3000",
+      "https://connect-buzz-backend.onrender.com",
+    ],
     methods: ["GET", "POST"],
     allowedHeaders: ["Content-type"],
   },
+  path: "/socket.io",
 });
 
 const port = process.env.PORT || 8000;
@@ -45,16 +50,16 @@ routes.forEach((route) => {
 // .catch((err) => console.log(err));
 
 // Socket Io
-// io.on("connect", (socket) => {
-//   console.log("A user connected with SocketIo Id", socket.id);
-// });
+io.on("connect", (socket) => {
+  // console.log("A user connected with SocketIo Id", socket.id);
+});
 
-io.on("connect", (socket)=>{
-  socket.on("new-post", (newPost)=>{
-    // console.log("New socket IO post in console", newPost)
-    socket.broadcast.emit("new-post", newPost)
-  })
-})
+io.on("connect", (socket) => {
+  socket.on("new-post", (newPost) => {
+    // console.log("New socket IO post in console", newPost);
+    socket.broadcast.emit("new-post", newPost);
+  });
+});
 
 // Server running on port
 http.listen(port, () => console.log(`Server is running on Port ${port}`));
