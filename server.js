@@ -7,17 +7,21 @@ const path = require("path");
 
 const app = express();
 const http = require("http").createServer(app);
-const io = require("socket.io")(http, {
-  cors: {
-    origin: [
-      "http://localhost:3000",
-      "https://connect-buzz-backend.onrender.com",
-    ],
-    methods: ["GET", "POST"],
-    allowedHeaders: ["Content-type"],
-  },
-  path: "/socket.io",
-});
+const io = require("socket.io")(
+  http,
+  {
+    path: "/socket.io",
+    cors: {
+      origin: [
+        "http://localhost:3000",
+        "https://connect-buzz-backend.onrender.com",
+      ],
+      methods: ["GET", "POST"],
+      allowedHeaders: ["Content-type"],
+      credentials: true,
+    },
+  }
+);
 
 const port = process.env.PORT || 8000;
 
@@ -38,7 +42,17 @@ app.use(
   })
 );
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({ origin: [process.env.CLIENT_URL] }));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://connect-buzz-backend.onrender.com",
+    ],
+    methods: ["GET", "PUT", "POST", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true, // if you're using cookies or other credentials
+  })
+);
 
 // Autolaod routes
 const routes = readdirSync("./routes");
@@ -57,7 +71,7 @@ io.on("connect", (socket) => {
 io.on("connect", (socket) => {
   socket.on("new-post", (newPost) => {
     // console.log("New socket IO post in console", newPost);
-    socket.broadcast.emit("new-post", newPost);
+    socket.broadcast.emit("new-post", newPost); 
   });
 });
 
