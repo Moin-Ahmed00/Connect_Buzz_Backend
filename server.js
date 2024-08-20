@@ -44,10 +44,7 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://connect-buzz-backend.onrender.com",
-    ],
+    origin: [process.env.CLIENT_URL],
     methods: ["GET", "PUT", "POST", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true, // if you're using cookies or other credentials
