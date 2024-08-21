@@ -14,7 +14,7 @@ const io = require("socket.io")(
     cors: {
       origin: [
         "http://localhost:3000",
-        "https://connect-buzz-backend.onrender.com",
+        "https://connect-buzz.onrender.com",
       ],
       methods: ["GET", "POST"],
       allowedHeaders: ["Content-type"],
